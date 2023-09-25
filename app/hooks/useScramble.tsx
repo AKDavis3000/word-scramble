@@ -7,8 +7,11 @@ const useScramble = () => {
   const [input, setInput] = useState([]);
   const [slicedLetters, setSlicedLetters] = useState([]);
   const [currentGuess, setCurrentGuess] = useState();
-  const [score, setScore] = useState(0);
   const [getHelp, setGetHelp] = useState(false);
+  const [submitGuess, setSubmitGuess] = useState(false);
+  const [score, setScore] = useState(0);
+  const [showLetter, setShowLetter] = useState(true);
+
   // const [historyGuesses, setHistoryGuesses] = useState();
   // const [wasClicked, setWasClicked] = useState(false);
   // const [click, setClick] = useState();
@@ -16,6 +19,12 @@ const useScramble = () => {
   // opens the help modal
   const changeHelpModal = () => {
     setGetHelp((prev) => !prev);
+  };
+
+  // dependency state to run every time enter is pressed
+  const isSubmitted = () => {
+    setSubmitGuess((prev) => !prev);
+    setInput('');
   };
 
   // generates 6 letters from an array
@@ -34,31 +43,12 @@ const useScramble = () => {
   }
 
   // displays clicked letter in display section
-  const getLetterInput = (event, i) => {
-    // clicked();
-    // console.log(event);
-    // console.log(i);
+  const getLetterInput = (event) => {
     const letters = event.target.textContent;
-    const elementId = i;
     const element = event.target;
     setInput((prev) => {
       return [...prev, letters];
     });
-    // if (input.length === 6) {
-    // }
-    // delete the clicked letter from green
-    // add display:none to specific span
-    // if span is clicked then add display none
-    // how to tell is span is "clicked"
-    // if the index was clicked then delete it
-    // first using element
-    // setClick((prev) => {
-    //   const arr = [...prev, element];
-    //   arr.forEach((el) => {
-
-    //   })
-    // });
-    // second using element id
   };
 
   // deletes letter using arrow
@@ -72,12 +62,14 @@ const useScramble = () => {
   const saveCurrentGuess = () => {
     const joinedInput = input.join('');
     setCurrentGuess(joinedInput);
+    isSubmitted();
   };
 
   // resets the letters
   const resetGame = () => {
     newLetters();
     setInput('');
+    setScore(0);
   };
 
   return {
@@ -86,6 +78,11 @@ const useScramble = () => {
     slicedLetters,
     currentGuess,
     getHelp,
+    submitGuess,
+    score,
+    showLetter,
+    setShowLetter,
+    setScore,
     changeHelpModal,
     saveCurrentGuess,
     getLetterInput,

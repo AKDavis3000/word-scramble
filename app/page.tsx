@@ -3,8 +3,7 @@
 import Image from 'next/image';
 import './scss/styles.scss';
 import Help from './Components/Help';
-import getAllWords from '@/lib/getAllWords';
-import { FaPlay, FaPause, FaArrowLeft } from 'react-icons/fa';
+import { FaPlay, FaPause, FaArrowLeft, FaCheck } from 'react-icons/fa';
 import { useState, useEffect, useRef } from 'react';
 import useScramble from './hooks/useScramble';
 
@@ -13,8 +12,11 @@ export default function Home() {
     isGame,
     input,
     slicedLetters,
-
+    submitGuess,
     currentGuess,
+    score,
+    showLetter,
+    setScore,
     getLetterInput,
     deleteLetterInput,
     resetGame,
@@ -26,25 +28,25 @@ export default function Home() {
   const [countdown, setCountdown] = useState(60);
   const timer = useRef(0);
 
-  // useEffect(() => {
-  //   if (!isGame) {
-  //     timer.current = setInterval(() => {
-  //       setCountdown((prev) => prev - 1);
-  //     }, 1000);
-  //     return () => clearInterval(timer.current);
-  //   }
-  // });
+  useEffect(() => {
+    if (!isGame) {
+      timer.current = setInterval(() => {
+        setCountdown((prev) => prev - 1);
+      }, 1000);
+      return () => clearInterval(timer.current);
+    }
+  });
 
-  // useEffect(() => {
-  //   if (countdown <= 0) {
-  //     clearInterval(timer.current);
-  //   }
-  // });
+  useEffect(() => {
+    if (countdown <= 0) {
+      clearInterval(timer.current);
+    }
+  });
 
   // causes state to update the current guess immediately upon pressing enter
   useEffect(() => {
     if (currentGuess) {
-      console.log('value');
+      console.log('valid');
     }
   }, [currentGuess]);
 
@@ -60,14 +62,25 @@ export default function Home() {
   if (isLoading) return <p> Loading...</p>;
   if (!data) return <p>No data</p>;
 
-  const words = data[0].word;
+  console.log(data);
+  const words = data?.[0];
   console.log(words);
+
+  // changes the score of the game
+  const changeScore = () => {
+    if (words || data !== undefined) {
+      setScore((prev) => prev + 100);
+    } else {
+      if (words || data === undefined) {
+        setScore((prev) => prev - 10);
+      }
+    }
+  };
 
   return (
     <>
       <p className="title">Word Scramble</p>
       <Help />
-
       {isGame ? (
         <div className="start_play">
           <div className="fa-start-wrapper">
@@ -82,7 +95,7 @@ export default function Home() {
         <main className="main_wrapper">
           <div className="score_time_wrapper">
             <div className="score_wrapper">
-              <span className="score">0</span>
+              <span className="score">{score}</span>
             </div>
             <div className="controls">
               <span className="pause">
@@ -93,12 +106,19 @@ export default function Home() {
               </span>
             </div>
             <div className="time_wrapper">
-              <span className="timer">1:00</span>
-              {/* <span className="timer"> {countdown}</span> */}
+              <span className="timer"> {countdown}</span>
             </div>
           </div>
 
           <div className="display_wrapper">
+            {words === undefined && (
+              <p
+                className={
+                  words === undefined ? 'invalid validity_display' : 'invalid'
+                }>
+                Not a valid word
+              </p>
+            )}
             <div className="display">{input}</div>
           </div>
           <div className="letter_wrapper">
@@ -106,9 +126,12 @@ export default function Home() {
               return (
                 <p
                   key={i}
-                  className="letter_container"
-                  onClick={(event) => getLetterInput(event, i)}>
-                  {l}
+                  className="letter_container">
+                  <span
+                    onClick={getLetterInput}
+                    className="letter">
+                    {l}
+                  </span>
                 </p>
               );
             })}
@@ -122,13 +145,17 @@ export default function Home() {
           <div className="button_wrapper">
             <button
               className="reset"
-              onClick={resetGame}>
+              onClick={() => {
+                resetGame();
+              }}>
               New Game
             </button>
-
             <button
               className="enter"
-              onClick={saveCurrentGuess}>
+              onClick={() => {
+                saveCurrentGuess();
+                changeScore();
+              }}>
               Enter
             </button>
           </div>
