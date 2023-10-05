@@ -12,10 +12,11 @@ export default function Home() {
     isGame,
     input,
     slicedLetters,
-    submitGuess,
     currentGuess,
     score,
     showLetter,
+    historyGuesses,
+    setCurrentGuess,
     setScore,
     getLetterInput,
     deleteLetterInput,
@@ -28,6 +29,7 @@ export default function Home() {
   const [countdown, setCountdown] = useState(60);
   const timer = useRef(0);
 
+  // starts the timer when the game starts
   useEffect(() => {
     if (!isGame) {
       timer.current = setInterval(() => {
@@ -37,17 +39,16 @@ export default function Home() {
     }
   });
 
+  // stops the timer at 0
   useEffect(() => {
     if (countdown <= 0) {
       clearInterval(timer.current);
     }
   });
 
-  // causes state to update the current guess immediately upon pressing enter
+  // causes state to update the current guess immediately upon pressing enter but isnt working because current guess is undefined the first time enter is pressed
   useEffect(() => {
-    if (currentGuess) {
-      console.log('valid');
-    }
+    currentGuess;
   }, [currentGuess]);
 
   useEffect(() => {
@@ -62,20 +63,20 @@ export default function Home() {
   if (isLoading) return <p> Loading...</p>;
   if (!data) return <p>No data</p>;
 
-  console.log(data);
+  // console.log(data);
   const words = data?.[0];
-  console.log(words);
+  // console.log(words);
 
   // changes the score of the game
+  // still not working
   const changeScore = () => {
     if (words || data !== undefined) {
       setScore((prev) => prev + 100);
-    } else {
-      if (words || data === undefined) {
-        setScore((prev) => prev - 10);
-      }
     }
   };
+
+  // remove the letters after clicked
+  const remainingLetters = slicedLetters.filter((el) => !input.includes(el));
 
   return (
     <>
@@ -106,7 +107,7 @@ export default function Home() {
               </span>
             </div>
             <div className="time_wrapper">
-              <span className="timer"> {countdown}</span>
+              <span className="timer"></span>
             </div>
           </div>
 
@@ -122,7 +123,7 @@ export default function Home() {
             <div className="display">{input}</div>
           </div>
           <div className="letter_wrapper">
-            {slicedLetters.map((l, i) => {
+            {remainingLetters.map((l, i) => {
               return (
                 <p
                   key={i}
@@ -135,6 +136,20 @@ export default function Home() {
                 </p>
               );
             })}
+            {/* {slicedLetters &&
+              slicedLetters.map((l, i) => {
+                return (
+                  <p
+                    key={i}
+                    className="letter_container">
+                    <span
+                      onClick={getLetterInput}
+                      className="letter">
+                      {l}
+                    </span>
+                  </p>
+                );
+              })} */}
             <span>
               <FaArrowLeft
                 className="fa-arrow"

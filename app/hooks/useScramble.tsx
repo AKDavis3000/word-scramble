@@ -6,25 +6,18 @@ const useScramble = () => {
   const [isGame, setIsGame] = useState(true);
   const [input, setInput] = useState([]);
   const [slicedLetters, setSlicedLetters] = useState([]);
-  const [currentGuess, setCurrentGuess] = useState();
+  const [currentGuess, setCurrentGuess] = useState(null);
   const [getHelp, setGetHelp] = useState(false);
-  const [submitGuess, setSubmitGuess] = useState(false);
   const [score, setScore] = useState(0);
   const [showLetter, setShowLetter] = useState(true);
+  const [historyGuesses, setHistoryGuesses] = useState([]);
 
-  // const [historyGuesses, setHistoryGuesses] = useState();
   // const [wasClicked, setWasClicked] = useState(false);
   // const [click, setClick] = useState();
 
   // opens the help modal
   const changeHelpModal = () => {
     setGetHelp((prev) => !prev);
-  };
-
-  // dependency state to run every time enter is pressed
-  const isSubmitted = () => {
-    setSubmitGuess((prev) => !prev);
-    setInput('');
   };
 
   // generates 6 letters from an array
@@ -43,7 +36,7 @@ const useScramble = () => {
   }
 
   // displays clicked letter in display section
-  const getLetterInput = (event) => {
+  const getLetterInput = (event: any) => {
     const letters = event.target.textContent;
     const element = event.target;
     setInput((prev) => {
@@ -58,17 +51,28 @@ const useScramble = () => {
     });
   };
 
+  // const saveLastGuess = () => {
+  //   setHistoryGuesses((prev) => {
+  //     return [...prev, input];
+  //   });
+  // };
+
   // save the current guess and convert to string
   const saveCurrentGuess = () => {
     const joinedInput = input.join('');
     setCurrentGuess(joinedInput);
-    isSubmitted();
+    console.log(currentGuess);
+    setInput([]);
+    // setHistoryGuesses((prev) => {
+    //   return [...currentGuess];
+    // });
+    // console.log(historyGuesses);
   };
 
   // resets the letters
   const resetGame = () => {
     newLetters();
-    setInput('');
+    setInput([]);
     setScore(0);
   };
 
@@ -78,9 +82,10 @@ const useScramble = () => {
     slicedLetters,
     currentGuess,
     getHelp,
-    submitGuess,
     score,
     showLetter,
+    historyGuesses,
+    setCurrentGuess,
     setShowLetter,
     setScore,
     changeHelpModal,

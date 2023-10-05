@@ -171,14 +171,13 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-
-    .letter {
-      font-size: 2em;
-      padding: 10px;
-      cursor: pointer;
-      color: black;
-      margin: 0 20px;
-    }
+  }
+  .letter {
+    font-size: 2em;
+    padding: 10px;
+    cursor: pointer;
+    color: black;
+    margin: 0 20px;
   }
   .letter_container:hover {
     background-color: $dkYellowGr;
