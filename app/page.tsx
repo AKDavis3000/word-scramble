@@ -136,20 +136,6 @@ export default function Home() {
                 </p>
               );
             })}
-            {/* {slicedLetters &&
-              slicedLetters.map((l, i) => {
-                return (
-                  <p
-                    key={i}
-                    className="letter_container">
-                    <span
-                      onClick={getLetterInput}
-                      className="letter">
-                      {l}
-                    </span>
-                  </p>
-                );
-              })} */}
             <span>
               <FaArrowLeft
                 className="fa-arrow"
