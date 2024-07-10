@@ -21,8 +21,7 @@ export default function Help() {
             />
             <p>
               Create as many words as you can before the timer runs out. Each
-              valid word is worth 100 points. If your word is invalid you lose
-              10 points. Good luck! 😃
+              valid word is worth 100 points. Good luck! 😃
             </p>
           </div>
         </div>

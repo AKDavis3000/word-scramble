@@ -6,14 +6,11 @@ const useScramble = () => {
   const [isGame, setIsGame] = useState(true);
   const [input, setInput] = useState([]);
   const [slicedLetters, setSlicedLetters] = useState([]);
-  const [currentGuess, setCurrentGuess] = useState(null);
+  const [currentGuess, setCurrentGuess] = useState();
   const [getHelp, setGetHelp] = useState(false);
   const [score, setScore] = useState(0);
   const [showLetter, setShowLetter] = useState(true);
   const [historyGuesses, setHistoryGuesses] = useState([]);
-
-  // const [wasClicked, setWasClicked] = useState(false);
-  // const [click, setClick] = useState();
 
   // opens the help modal
   const changeHelpModal = () => {
@@ -51,11 +48,13 @@ const useScramble = () => {
     });
   };
 
-  // const saveLastGuess = () => {
-  //   setHistoryGuesses((prev) => {
-  //     return [...prev, input];
-  //   });
-  // };
+  // saves users guess
+  const saveLastGuess = () => {
+    setHistoryGuesses((prev) => {
+      return [...prev, input.join()];
+    });
+    console.log(historyGuesses);
+  };
 
   // save the current guess and convert to string
   const saveCurrentGuess = () => {
@@ -63,10 +62,6 @@ const useScramble = () => {
     setCurrentGuess(joinedInput);
     console.log(currentGuess);
     setInput([]);
-    // setHistoryGuesses((prev) => {
-    //   return [...currentGuess];
-    // });
-    // console.log(historyGuesses);
   };
 
   // resets the letters
@@ -85,6 +80,7 @@ const useScramble = () => {
     score,
     showLetter,
     historyGuesses,
+    saveLastGuess,
     setCurrentGuess,
     setShowLetter,
     setScore,

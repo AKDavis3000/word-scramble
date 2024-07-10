@@ -6,6 +6,8 @@ import Help from './Components/Help';
 import { FaPlay, FaPause, FaArrowLeft, FaCheck } from 'react-icons/fa';
 import { useState, useEffect, useRef } from 'react';
 import useScramble from './hooks/useScramble';
+import { apiKey, appId } from '@/data/dontcommit';
+import getAllWords from '@/lib/getAllWords';
 
 export default function Home() {
   const {
@@ -16,6 +18,7 @@ export default function Home() {
     score,
     showLetter,
     historyGuesses,
+    saveLastGuess,
     setCurrentGuess,
     setScore,
     getLetterInput,
@@ -24,10 +27,11 @@ export default function Home() {
     startGame,
     saveCurrentGuess,
   } = useScramble();
-  const [data, setData] = useState(null);
+  const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [countdown, setCountdown] = useState(60);
   const timer = useRef(0);
+  const words = data?.[0];
 
   // starts the timer when the game starts
   useEffect(() => {
@@ -47,25 +51,45 @@ export default function Home() {
   });
 
   // causes state to update the current guess immediately upon pressing enter but isnt working because current guess is undefined the first time enter is pressed
-  useEffect(() => {
-    currentGuess;
-  }, [currentGuess]);
+  // useEffect(() => {
+  //   currentGuess;
+  // }, [currentGuess]);
+
+  // useEffect(() => {
+  //   fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${currentGuess}`)
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       setData(data);
+  //       setIsLoading(false);
+  //     });
+  // }, [currentGuess]);
+
+  // useEffect(() => {
+  //   const url = `https://od-api-sandbox.oxforddictionaries.com/api/v2/search/en-gb?q=${testGuess}`;
+  //   const options = {
+  //     method: 'GET',
+  //     headers: {
+  //       app_id: appId,
+  //       app_key: apiKey,
+  //       Accept: 'application/json',
+  //     },
+  //   };
+
+  //   fetch(url, options)
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       setData(data);
+  //       setIsLoading(false);
+  //     });
+  // }, [testGuess]);
 
   useEffect(() => {
-    fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${currentGuess}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setData(data);
-        setIsLoading(false);
-      });
-  }, [currentGuess]);
+    getAllWords();
+  }, []);
 
+  console.log(data);
   if (isLoading) return <p> Loading...</p>;
   if (!data) return <p>No data</p>;
-
-  // console.log(data);
-  const words = data?.[0];
-  // console.log(words);
 
   // changes the score of the game
   // still not working
@@ -107,7 +131,7 @@ export default function Home() {
               </span>
             </div>
             <div className="time_wrapper">
-              <span className="timer"></span>
+              <span className="timer">{countdown}</span>
             </div>
           </div>
 
@@ -156,6 +180,7 @@ export default function Home() {
               onClick={() => {
                 saveCurrentGuess();
                 changeScore();
+                saveLastGuess();
               }}>
               Enter
             </button>
