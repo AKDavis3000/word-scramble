@@ -33,3 +33,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+#api key
+78bd3ceeb42fd1e0f1717828e10d189c

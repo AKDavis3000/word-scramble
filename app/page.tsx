@@ -11,11 +11,13 @@ export default function Home() {
   const {
     isGame,
     input,
+    // why is newletters not transferred over and used instead of sliced letters??
     slicedLetters,
     currentGuess,
     score,
     showLetter,
     historyGuesses,
+    saveLastGuess,
     setCurrentGuess,
     setScore,
     getLetterInput,
@@ -24,10 +26,11 @@ export default function Home() {
     startGame,
     saveCurrentGuess,
   } = useScramble();
-  const [data, setData] = useState(null);
+  const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [countdown, setCountdown] = useState(60);
   const timer = useRef(0);
+  const words = data?.[0];
 
   // starts the timer when the game starts
   useEffect(() => {
@@ -47,9 +50,6 @@ export default function Home() {
   });
 
   // causes state to update the current guess immediately upon pressing enter but isnt working because current guess is undefined the first time enter is pressed
-  useEffect(() => {
-    currentGuess;
-  }, [currentGuess]);
 
   useEffect(() => {
     fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${currentGuess}`)
@@ -60,22 +60,20 @@ export default function Home() {
       });
   }, [currentGuess]);
 
+  console.log(data);
   if (isLoading) return <p> Loading...</p>;
   if (!data) return <p>No data</p>;
-
-  // console.log(data);
-  const words = data?.[0];
-  // console.log(words);
 
   // changes the score of the game
   // still not working
   const changeScore = () => {
-    if (words || data !== undefined) {
+    if (words !== undefined) {
       setScore((prev) => prev + 100);
     }
   };
 
   // remove the letters after clicked
+  // try and fix with a nested filter func
   const remainingLetters = slicedLetters.filter((el) => !input.includes(el));
 
   return (
@@ -107,7 +105,7 @@ export default function Home() {
               </span>
             </div>
             <div className="time_wrapper">
-              <span className="timer"></span>
+              <span className="timer">{countdown}</span>
             </div>
           </div>
 
@@ -156,6 +154,7 @@ export default function Home() {
               onClick={() => {
                 saveCurrentGuess();
                 changeScore();
+                saveLastGuess();
               }}>
               Enter
             </button>
