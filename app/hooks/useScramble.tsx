@@ -11,7 +11,10 @@ const useScramble = () => {
   const [score, setScore] = useState(0);
   const [showLetter, setShowLetter] = useState(true);
   const [historyGuesses, setHistoryGuesses] = useState([]);
+<<<<<<< HEAD
   const joinedInput = input.join('');
+=======
+>>>>>>> 569eac515cc35a01429ac42ed90fdf347985bbdb
 
   // opens the help modal
   const changeHelpModal = () => {
@@ -50,10 +53,16 @@ const useScramble = () => {
   };
 
   // saves users guess
+<<<<<<< HEAD
   // fix guess to exclude commas
   const saveLastGuess = () => {
     setHistoryGuesses((prev) => {
       return [...prev, joinedInput];
+=======
+  const saveLastGuess = () => {
+    setHistoryGuesses((prev) => {
+      return [...prev, input.join()];
+>>>>>>> 569eac515cc35a01429ac42ed90fdf347985bbdb
     });
     console.log(historyGuesses);
   };
