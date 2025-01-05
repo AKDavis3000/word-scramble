@@ -33,14 +33,14 @@ export default function Home() {
   const words = data?.[0];
 
   // starts the timer when the game starts
-  useEffect(() => {
-    if (!isGame) {
-      timer.current = setInterval(() => {
-        setCountdown((prev) => prev - 1);
-      }, 1000);
-      return () => clearInterval(timer.current);
-    }
-  });
+  // useEffect(() => {
+  //   if (!isGame) {
+  //     timer.current = setInterval(() => {
+  //       setCountdown((prev) => prev - 1);
+  //     }, 1000);
+  //     return () => clearInterval(timer.current);
+  //   }
+  // });
 
   // stops the timer at 0
   useEffect(() => {

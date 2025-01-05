@@ -6,12 +6,12 @@ const useScramble = () => {
   const [isGame, setIsGame] = useState(true);
   const [input, setInput] = useState([]);
   const [slicedLetters, setSlicedLetters] = useState([]);
-  const [currentGuess, setCurrentGuess] = useState();
+  const [currentGuess, setCurrentGuess] = useState(null);
   const [getHelp, setGetHelp] = useState(false);
   const [score, setScore] = useState(0);
   const [showLetter, setShowLetter] = useState(true);
   const [historyGuesses, setHistoryGuesses] = useState([]);
-  const joinedInput = input.join('');
+  const joinedInput: string = input.join('');
 
   // opens the help modal
   const changeHelpModal = () => {
@@ -21,10 +21,8 @@ const useScramble = () => {
   // generates 6 letters from an array
   const newLetters = () => {
     const sort = letterArray.sort(() => Math.random() - 0.5);
-    const sliced = sort.slice(0, 6);
-    return setSlicedLetters((prev) => {
-      return sliced;
-    });
+    const sliced: any[] = sort.slice(0, 6);
+    setSlicedLetters(sliced);
   };
 
   // starts the game
