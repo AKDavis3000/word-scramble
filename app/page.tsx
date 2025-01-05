@@ -50,7 +50,6 @@ export default function Home() {
   });
 
   // causes state to update the current guess immediately upon pressing enter
-  // causes state to update the current guess immediately upon pressing enter but isnt working because current guess is undefined the first time enter is pressed
 
   useEffect(() => {
     fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${currentGuess}`)
