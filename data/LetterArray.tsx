@@ -32,9 +32,7 @@ const letterArray = [
   'e',
   'f',
   'g',
-
   'i',
-
   'k',
   'l',
   'm',
@@ -48,6 +46,14 @@ const letterArray = [
   'w',
   'y',
 
+  'e',
+  'o',
+  'u',
+  'a',
+  'e',
+  'i',
+  'o',
+  'u',
   'e',
   'o',
   'u',
