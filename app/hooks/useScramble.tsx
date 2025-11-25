@@ -63,6 +63,10 @@ const useScramble = () => {
     setInput([]);
   };
 
+  // remove the letters after clicked
+  // try and fix with a nested filter func
+  const remainingLetters = slicedLetters.filter((el) => !input.includes(el));
+
   // resets the letters
   const resetGame = () => {
     newLetters();
@@ -79,6 +83,7 @@ const useScramble = () => {
     score,
     showLetter,
     historyGuesses,
+    remainingLetters,
     saveLastGuess,
     setCurrentGuess,
     setShowLetter,

@@ -11,12 +11,12 @@ export default function Home() {
   const {
     isGame,
     input,
-    // why is newletters not transferred over and used instead of sliced letters??
     slicedLetters,
     currentGuess,
     score,
     showLetter,
     historyGuesses,
+    remainingLetters,
     saveLastGuess,
     setCurrentGuess,
     setScore,
@@ -33,21 +33,21 @@ export default function Home() {
   const words = data?.[0];
 
   // starts the timer when the game starts
-  // useEffect(() => {
-  //   if (!isGame) {
-  //     timer.current = setInterval(() => {
-  //       setCountdown((prev) => prev - 1);
-  //     }, 1000);
-  //     return () => clearInterval(timer.current);
-  //   }
-  // });
+  useEffect(() => {
+    if (!isGame) {
+      timer.current = setInterval(() => {
+        setCountdown((prev) => prev - 1);
+      }, 1000);
+      return () => clearInterval(timer.current);
+    }
+  });
 
   // stops the timer at 0
-  // useEffect(() => {
-  //   if (countdown <= 0) {
-  //     clearInterval(timer.current);
-  //   }
-  // });
+  useEffect(() => {
+    if (countdown <= 0) {
+      clearInterval(timer.current);
+    }
+  });
 
   // causes state to update the current guess immediately upon pressing enter
   useEffect(() => {
@@ -59,21 +59,18 @@ export default function Home() {
       });
   }, [currentGuess]);
 
-  console.log(data);
   if (isLoading) return <p> Loading...</p>;
   if (!data) return <p>No data</p>;
 
   // changes the score of the game
   // still not working
   const changeScore = () => {
-    if (words !== undefined) {
+    if (words === undefined || null) {
+      return score;
+    } else {
       setScore((prev) => prev + 100);
     }
   };
-
-  // remove the letters after clicked
-  // try and fix with a nested filter func
-  const remainingLetters = slicedLetters.filter((el) => !input.includes(el));
 
   return (
     <>
@@ -152,8 +149,8 @@ export default function Home() {
               className="enter"
               onClick={() => {
                 saveCurrentGuess();
-                changeScore();
                 saveLastGuess();
+                changeScore();
               }}>
               Enter
             </button>
